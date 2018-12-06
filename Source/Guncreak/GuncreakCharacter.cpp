@@ -8,6 +8,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GC_WeaponBase.h"
 
 //////////////////////////////////////////////////////////////////////////
 // AGuncreakCharacter
@@ -56,6 +57,8 @@ void AGuncreakCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	check(PlayerInputComponent);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGuncreakCharacter::Interact);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AGuncreakCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AGuncreakCharacter::MoveRight);
@@ -131,4 +134,11 @@ void AGuncreakCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(Direction, Value);
 	}
+}
+
+void AGuncreakCharacter::Interact() {
+
+	UE_LOG(LogTemp, Warning, TEXT("INTERACTING!!! 10193890213"));
+	
+	GetWorld()->SpawnActor<AGC_WeaponBase>(this->GetActorLocation(), this->GetActorRotation());
 }
