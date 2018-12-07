@@ -65,6 +65,16 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AGC_WeaponBase> RevolverBP;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AGC_WeaponBase> RifleBP;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AGC_WeaponBase> ShotgunBP;
+
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

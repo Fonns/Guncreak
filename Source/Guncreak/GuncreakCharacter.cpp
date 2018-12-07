@@ -140,5 +140,6 @@ void AGuncreakCharacter::Interact() {
 
 	UE_LOG(LogTemp, Warning, TEXT("INTERACTING!!! 10193890213"));
 	
-	GetWorld()->SpawnActor<AGC_WeaponBase>(this->GetActorLocation(), this->GetActorRotation());
+	//GetWorld()->SpawnActor<AGC_WeaponBase>(RevolverBP, this->GetActorLocation(), this->GetActorRotation());
+	GetWorld()->SpawnActor<AGC_WeaponBase>(RevolverBP)->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, "Weapon_Attach");
 }

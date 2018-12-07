@@ -14,13 +14,17 @@ class GUNCREAK_API AGC_WeaponBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AGC_WeaponBase();
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere, Category = "Weapon Stats")
+	int BulletDamage;
+
+private:	
+	
 
 };
