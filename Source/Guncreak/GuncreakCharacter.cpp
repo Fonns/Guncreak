@@ -59,6 +59,7 @@ void AGuncreakCharacter::SetupPlayerInputComponent(class UInputComponent* Player
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGuncreakCharacter::Interact);
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGuncreakCharacter::ShootGun);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AGuncreakCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AGuncreakCharacter::MoveRight);
@@ -138,8 +139,16 @@ void AGuncreakCharacter::MoveRight(float Value)
 
 void AGuncreakCharacter::Interact() {
 
-	UE_LOG(LogTemp, Warning, TEXT("INTERACTING!!! 10193890213"));
+	UE_LOG(LogTemp, Warning, TEXT("INTERACTING!!!"));
 	
 	//GetWorld()->SpawnActor<AGC_WeaponBase>(RevolverBP, this->GetActorLocation(), this->GetActorRotation());
 	GetWorld()->SpawnActor<AGC_WeaponBase>(RevolverBP)->AttachToComponent(this->GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, "Weapon_Attach");
+}
+
+void AGuncreakCharacter::ShootGun() {
+
+
+
+	AGC_WeaponBase* WeaponBaseClass = Cast<AGC_WeaponBase>(AGC_WeaponBase::StaticClass());
+	WeaponBaseClass->Fire();
 }

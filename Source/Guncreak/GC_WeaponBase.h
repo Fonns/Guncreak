@@ -16,13 +16,23 @@ public:
 	AGC_WeaponBase();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void Fire();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AGC_BulletBase> BulletBP;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AGC_BulletBase> WeaponItselfBP;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Stats")
 	int BulletDamage;
+
+	USkeletalMeshComponent* SkeletalMeshComponent;
 
 private:	
 	

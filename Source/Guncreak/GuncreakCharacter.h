@@ -41,6 +41,7 @@ protected:
 	void MoveRight(float Value);
 
 	void Interact();
+	void ShootGun();
 
 	/** 
 	 * Called via input to turn at a given rate. 
