@@ -7,7 +7,6 @@
 #include "GC_WeaponBase.generated.h"
 
 class USkeletalMeshComponent;
-class UDamageType;
 
 UCLASS()
 class GUNCREAK_API AGC_WeaponBase : public AActor
