@@ -21,8 +21,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void Fire();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* MeshComponent;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Stats")
+	int WeaponRange;
 
 public:	
 	// Called every frame
