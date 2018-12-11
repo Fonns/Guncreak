@@ -7,6 +7,7 @@
 #include "GC_WeaponBase.generated.h"
 
 class USkeletalMeshComponent;
+class UDamageType;
 
 UCLASS()
 class GUNCREAK_API AGC_WeaponBase : public AActor
@@ -27,8 +28,14 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* MeshComponent;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	TSubclassOf<UDamageType> DamageType;
+
 	UPROPERTY(EditAnywhere, Category = "Weapon Stats")
 	int WeaponRange;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Stats")
+	float WeaponDamage;
 
 public:	
 	// Called every frame

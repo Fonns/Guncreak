@@ -2,6 +2,7 @@
 
 #include "GC_WeaponBase.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AGC_WeaponBase::AGC_WeaponBase()
@@ -36,7 +37,8 @@ void AGC_WeaponBase::Fire() {
 		FRotator CameraRotation;
 		GunOwner->GetActorEyesViewPoint(CameraLocation, CameraRotation);
 
-		FVector TraceEnd = CameraLocation + (CameraRotation.Vector() * WeaponRange);
+		FVector BulletDir = CameraRotation.Vector();
+		FVector TraceEnd = CameraLocation + (BulletDir * WeaponRange);
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(GunOwner);
@@ -46,7 +48,9 @@ void AGC_WeaponBase::Fire() {
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, CameraLocation, TraceEnd, ECC_Visibility, QueryParams)) {
 
-			//apply damage
+			AActor* HitActor = Hit.GetActor();
+
+			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, BulletDir, Hit, GunOwner->GetInstigatorController(), this, DamageType);
 		}
 
 		DrawDebugLine(GetWorld(), CameraLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
