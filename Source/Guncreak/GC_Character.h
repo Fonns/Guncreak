@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "GC_Character.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS()
 class GUNCREAK_API AGC_Character : public ACharacter
 {
@@ -19,7 +22,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+	void MoveForward(float Value);
+
+	void MoveRight(float Value);
+
+	void PlayerCrouch();
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USpringArmComponent* SpringArmComponent;
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
