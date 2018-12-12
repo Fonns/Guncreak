@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GC_Character.h"
+#include "GC_WeaponBase.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
@@ -44,6 +45,9 @@ void AGC_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAxis("LookUp", this, &AGC_Character::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookSide", this, &AGC_Character::AddControllerYawInput);
 
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGC_WeaponBase::Fire);
+	PlayerInputComponent->BindAction("Aim", IE_Pressed, this, &AGC_Character::AimWeapon);
+	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AGC_Character::AimWeaponCancel);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AGC_Character::PlayerCrouch);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 }
@@ -79,4 +83,14 @@ void AGC_Character::PlayerCrouch() {
 		Crouch();
 		GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 	}
+}
+
+void AGC_Character::AimWeapon() {
+
+
+}
+
+void AGC_Character::AimWeaponCancel() {
+
+
 }

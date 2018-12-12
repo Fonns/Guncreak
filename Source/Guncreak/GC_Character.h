@@ -28,6 +28,9 @@ protected:
 
 	void PlayerCrouch();
 
+	void AimWeapon();
+	void AimWeaponCancel();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComponent;
 
