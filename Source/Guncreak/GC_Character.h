@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class AGC_WeaponBase;
 
 UCLASS()
 class GUNCREAK_API AGC_Character : public ACharacter
@@ -19,7 +20,17 @@ public:
 	AGC_Character();
 
 protected:
-	// Called when the game starts or when spawned
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USpringArmComponent* SpringArmComponent;
+
+	AGC_WeaponBase* CurrentWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<AGC_WeaponBase> RifleBP;
+
 	virtual void BeginPlay() override;
 
 	void MoveForward(float Value);
@@ -29,13 +40,22 @@ protected:
 	void PlayerCrouch();
 
 	void AimWeapon();
+
 	void AimWeaponCancel();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	UCameraComponent* CameraComponent;
+	void Fire();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USpringArmComponent* SpringArmComponent;
+	void PickUpWeapon();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	float AimingFOV;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	float AimingInterpSpeed;
+
+	float DefaultAimFOV;
+
+	bool PlayerIsAiming;
 
 public:
 	// Called every frame

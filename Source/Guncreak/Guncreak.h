@@ -4,3 +4,4 @@
 
 #include "CoreMinimal.h"
 
+#define	COLLISION_BULLETS ECC_GameTraceChannel1
