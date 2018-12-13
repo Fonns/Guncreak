@@ -47,6 +47,9 @@ protected:
 
 	void PickUpWeapon();
 
+	UFUNCTION()
+	void HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	float AimingFOV;
 
@@ -56,6 +59,15 @@ protected:
 	float DefaultAimFOV;
 
 	bool PlayerIsAiming;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	bool PlayerHasDied;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	float Health;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
+	float InitialHealth;
 
 public:
 	// Called every frame

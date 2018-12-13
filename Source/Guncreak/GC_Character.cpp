@@ -2,9 +2,11 @@
 
 #include "GC_Character.h"
 #include "GC_WeaponBase.h"
+#include "Guncreak.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AGC_Character::AGC_Character()
@@ -20,7 +22,11 @@ AGC_Character::AGC_Character()
 	CameraComponent->bUsePawnControlRotation = false;
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
+	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_BULLETS, ECR_Ignore);
 
+	AimingFOV = 50.0f;
+	AimingInterpSpeed = 30.0f;
+	InitialHealth = 100.0f;
 }
 
 // Called when the game starts or when spawned
@@ -29,8 +35,12 @@ void AGC_Character::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerIsAiming = false;
+	PlayerHasDied = false;
 	DefaultAimFOV = CameraComponent->FieldOfView;
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
+
+	this->OnTakeAnyDamage.AddDynamic(this, &AGC_Character::HandleOnTakeAnyDamage);
+	Health = InitialHealth;
 }
 
 // Called every frame
@@ -123,5 +133,27 @@ void AGC_Character::PickUpWeapon() {
 	{
 		CurrentWeapon->SetOwner(this);
 		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Rifle_Attach");
+	}
+}
+
+void AGC_Character::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
+
+	if (Damage <= 0.0f)
+	{
+		return;
+	}
+
+	Health -= Damage;
+	UE_LOG(LogTemp, Warning, TEXT("Health foi alterada para: %s"), *FString::SanitizeFloat(Health));
+
+	if (Health <= 0.0f && !PlayerHasDied)
+	{
+		PlayerHasDied = true;
+		GetMovementComponent()->StopMovementImmediately();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		//GetMesh()->SetSimulatePhysics(true);
+
+		DetachFromControllerPendingDestroy();
+		SetLifeSpan(10.0f);
 	}
 }
