@@ -37,7 +37,7 @@ void AGC_WeaponBase::Fire() {
 		QueryParams.bTraceComplex = true;
 
 		FHitResult Hit;
-		if (GetWorld()->LineTraceSingleByChannel(Hit, CameraLocation, TraceEnd, ECC_Visibility, QueryParams)) {
+		if (GetWorld()->LineTraceSingleByChannel(Hit, CameraLocation, TraceEnd, COLLISION_BULLETS, QueryParams)) {
 
 			AActor* HitActor = Hit.GetActor();
 
