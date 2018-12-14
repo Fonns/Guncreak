@@ -10,6 +10,17 @@ class USkeletalMeshComponent;
 class UDamageType;
 class UParticleSystem;
 
+USTRUCT()
+struct FBulletTraceScan {
+
+	GENERATED_BODY()
+
+public:
+
+	UPROPERTY()
+	FVector_NetQuantize BulletEnd;
+};
+
 UCLASS()
 class GUNCREAK_API AGC_WeaponBase : public AActor
 {
@@ -39,9 +50,20 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Weapon Stats")
 	float WeaponDamage;
 
+	UPROPERTY(ReplicatedUsing=OnRepBulletTraceScan)
+	FBulletTraceScan BulletTraceScan;
+
+	UFUNCTION()
+	void OnRepBulletTraceScan();
+
+	void PlayImpactEffect(FVector ImpactPoint);
+
 public:	
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void Fire();
+
+	UFUNCTION(Server, Reliable, WithValidation)
+	void SVFire();
 
 };

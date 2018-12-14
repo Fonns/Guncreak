@@ -26,6 +26,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComponent;
 
+	UPROPERTY(Replicated)
 	AGC_WeaponBase* CurrentWeapon;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
@@ -47,6 +48,9 @@ protected:
 
 	void PickUpWeapon();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+	void SVPickUpWeapon();
+
 	UFUNCTION()
 	void HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
@@ -60,7 +64,7 @@ protected:
 
 	bool PlayerIsAiming;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
 	bool PlayerHasDied;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Player")

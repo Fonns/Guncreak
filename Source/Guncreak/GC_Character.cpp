@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AGC_Character::AGC_Character()
@@ -125,6 +126,11 @@ void AGC_Character::Fire() {
 
 void AGC_Character::PickUpWeapon() {
 
+	if (Role < ROLE_Authority)
+	{
+		SVPickUpWeapon();
+	}
+
 	FActorSpawnParameters WeaponSpawnParams;
 	WeaponSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -135,6 +141,17 @@ void AGC_Character::PickUpWeapon() {
 		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Rifle_Attach");
 	}
 }
+
+void AGC_Character::SVPickUpWeapon_Implementation() {
+
+	PickUpWeapon();
+}
+
+bool AGC_Character::SVPickUpWeapon_Validate() {
+
+	return true;
+}
+
 
 void AGC_Character::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
 
@@ -156,4 +173,11 @@ void AGC_Character::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 		DetachFromControllerPendingDestroy();
 		SetLifeSpan(10.0f);
 	}
+}
+
+void AGC_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AGC_Character, CurrentWeapon);
 }
