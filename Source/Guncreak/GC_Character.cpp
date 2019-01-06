@@ -27,7 +27,6 @@ AGC_Character::AGC_Character()
 
 	AimingFOV = 50.0f;
 	AimingInterpSpeed = 30.0f;
-	InitialHealth = 100.0f;
 }
 
 // Called when the game starts or when spawned
@@ -36,12 +35,11 @@ void AGC_Character::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerIsAiming = false;
-	PlayerHasDied = false;
 	DefaultAimFOV = CameraComponent->FieldOfView;
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
-	this->OnTakeAnyDamage.AddDynamic(this, &AGC_Character::HandleOnTakeAnyDamage);
-	Health = InitialHealth;
+	PickUpWeapon();
+
 }
 
 // Called every frame
@@ -153,7 +151,7 @@ bool AGC_Character::SVPickUpWeapon_Validate() {
 }
 
 
-void AGC_Character::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
+/*void AGC_Character::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
 
 	if (Damage <= 0.0f)
 	{
@@ -173,7 +171,7 @@ void AGC_Character::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 		DetachFromControllerPendingDestroy();
 		SetLifeSpan(10.0f);
 	}
-}
+}*/
 
 void AGC_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 
