@@ -155,6 +155,7 @@ void AGC_Character::OnHealthChanged(UGC_HealthComponent* HealthComp, float Healt
 		//GetMesh()->SetSimulatePhysics(true);
 
 		DetachFromControllerPendingDestroy();
+		CurrentWeapon->SetLifeSpan(10.0f);
 		SetLifeSpan(10.0f);
 	}
 }
