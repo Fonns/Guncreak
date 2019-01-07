@@ -67,7 +67,7 @@ protected:
 
 	bool PlayerIsAiming;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
 	bool PlayerHasDied;
 
 public:

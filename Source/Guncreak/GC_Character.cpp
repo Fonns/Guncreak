@@ -174,4 +174,5 @@ void AGC_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AGC_Character, CurrentWeapon);
+	DOREPLIFETIME(AGC_Character, PlayerHasDied);
 }

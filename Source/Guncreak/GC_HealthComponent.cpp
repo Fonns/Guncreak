@@ -1,11 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "GC_HealthComponent.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values for this component's properties
 UGC_HealthComponent::UGC_HealthComponent()
 {
 	InitialHealth = 100.0f;
+
+	SetIsReplicated(true);
 }
 
 
@@ -14,12 +17,14 @@ void UGC_HealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
 	
-	AActor* MyOwner = GetOwner();
-	if (MyOwner)
+	if (GetOwnerRole() == ROLE_Authority)
 	{
-		MyOwner->OnTakeAnyDamage.AddDynamic(this, &UGC_HealthComponent::HandleTakeAnyDamage);
+		AActor* MyOwner = GetOwner();
+		if (MyOwner)
+		{
+			MyOwner->OnTakeAnyDamage.AddDynamic(this, &UGC_HealthComponent::HandleTakeAnyDamage);
+		}
 	}
 
 	Health = InitialHealth;
@@ -38,4 +43,11 @@ void UGC_HealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage
 	UE_LOG(LogTemp, Warning, TEXT("Health foi alteradadwawawadawd para: %s"), *FString::SanitizeFloat(Health));
 
 	OnHealthChanged.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
+}
+
+void UGC_HealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UGC_HealthComponent, Health);
 }
