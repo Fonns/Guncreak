@@ -18,7 +18,7 @@ struct FBulletTraceScan {
 public:
 
 	UPROPERTY()
-	FVector_NetQuantize BulletEnd;
+	FVector_NetQuantize TraceTo;
 };
 
 UCLASS()
@@ -50,11 +50,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Weapon Stats")
 	float WeaponDamage;
 
-	UPROPERTY(ReplicatedUsing=OnRepBulletTraceScan)
-	FBulletTraceScan BulletTraceScan;
+	UPROPERTY(ReplicatedUsing = OnRep_HitScanTrace)
+	FBulletTraceScan HitScanTrace;
 
 	UFUNCTION()
-	void OnRepBulletTraceScan();
+	void OnRep_HitScanTrace();
 
 	void PlayImpactEffect(FVector ImpactPoint);
 

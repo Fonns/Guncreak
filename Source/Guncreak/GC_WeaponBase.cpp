@@ -21,6 +21,9 @@ AGC_WeaponBase::AGC_WeaponBase()
 	WeaponRange = 5000;
 
 	SetReplicates(true);
+
+	NetUpdateFrequency = 60.0f;
+	MinNetUpdateFrequency = 60.0f;
 }
 
 void AGC_WeaponBase::Fire() {
@@ -64,7 +67,7 @@ void AGC_WeaponBase::Fire() {
 		if (Role == ROLE_Authority)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("start onrep"));
-			BulletTraceScan.BulletEnd = TraceEnd;
+			HitScanTrace.TraceTo = TraceEnd;
 		}
 	}
 }
@@ -79,10 +82,16 @@ bool AGC_WeaponBase::SVFire_Validate() {
 	return true;
 }
 
-void AGC_WeaponBase::OnRepBulletTraceScan()
+/*void AGC_WeaponBase::OnRep_BulletTraceScan()
 {
 	UE_LOG(LogTemp, Warning, TEXT("onrepping"));
 	PlayImpactEffect(BulletTraceScan.BulletEnd);
+}*/
+
+void AGC_WeaponBase::OnRep_HitScanTrace()
+{
+	UE_LOG(LogTemp, Warning, TEXT("onrepping"));
+	PlayImpactEffect(HitScanTrace.TraceTo);
 }
 
 void AGC_WeaponBase::PlayImpactEffect(FVector ImpactPoint)
@@ -110,5 +119,5 @@ void AGC_WeaponBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLi
 
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME_CONDITION(AGC_WeaponBase, BulletTraceScan, COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(AGC_WeaponBase, HitScanTrace, COND_SkipOwner);
 }
