@@ -2,6 +2,7 @@
 
 #include "GC_Character.h"
 #include "GC_WeaponBase.h"
+#include "GC_HealthComponent.h"
 #include "Guncreak.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -23,6 +24,8 @@ AGC_Character::AGC_Character()
 	CameraComponent->bUsePawnControlRotation = false;
 	CameraComponent->SetupAttachment(SpringArmComponent);
 
+	HealthComp = CreateDefaultSubobject<UGC_HealthComponent>(TEXT("HealthComponent"));
+
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_BULLETS, ECR_Ignore);
 
 	AimingFOV = 50.0f;
@@ -39,6 +42,8 @@ void AGC_Character::BeginPlay()
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
 	PickUpWeapon();
+
+	HealthComp->OnHealthChanged.AddDynamic(this, &AGC_Character::OnHealthChanged);
 
 }
 
@@ -140,27 +145,8 @@ void AGC_Character::PickUpWeapon() {
 	}
 }
 
-void AGC_Character::SVPickUpWeapon_Implementation() {
-
-	PickUpWeapon();
-}
-
-bool AGC_Character::SVPickUpWeapon_Validate() {
-
-	return true;
-}
-
-
-/*void AGC_Character::HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser) {
-
-	if (Damage <= 0.0f)
-	{
-		return;
-	}
-
-	Health -= Damage;
-	UE_LOG(LogTemp, Warning, TEXT("Health foi alterada para: %s"), *FString::SanitizeFloat(Health));
-
+void AGC_Character::OnHealthChanged(UGC_HealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
 	if (Health <= 0.0f && !PlayerHasDied)
 	{
 		PlayerHasDied = true;
@@ -171,7 +157,17 @@ bool AGC_Character::SVPickUpWeapon_Validate() {
 		DetachFromControllerPendingDestroy();
 		SetLifeSpan(10.0f);
 	}
-}*/
+}
+
+void AGC_Character::SVPickUpWeapon_Implementation() {
+
+	PickUpWeapon();
+}
+
+bool AGC_Character::SVPickUpWeapon_Validate() {
+
+	return true;
+}
 
 void AGC_Character::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 

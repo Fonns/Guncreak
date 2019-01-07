@@ -9,6 +9,7 @@
 class UCameraComponent;
 class USpringArmComponent;
 class AGC_WeaponBase;
+class UGC_HealthComponent;
 
 UCLASS()
 class GUNCREAK_API AGC_Character : public ACharacter
@@ -25,6 +26,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComponent;
+
+	UGC_HealthComponent* HealthComp;
 
 	UPROPERTY(Replicated)
 	AGC_WeaponBase* CurrentWeapon;
@@ -51,8 +54,8 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 	void SVPickUpWeapon();
 
-	/*UFUNCTION()
-	void HandleOnTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);*/
+	UFUNCTION()
+		void OnHealthChanged(UGC_HealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	float AimingFOV;
@@ -63,6 +66,9 @@ protected:
 	float DefaultAimFOV;
 
 	bool PlayerIsAiming;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	bool PlayerHasDied;
 
 public:
 	// Called every frame

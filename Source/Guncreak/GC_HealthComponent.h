@@ -28,9 +28,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
 	float InitialHealth;
 
-	//UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
-	//bool PlayerHasDied;
-
 	UFUNCTION()
 	void HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 		
