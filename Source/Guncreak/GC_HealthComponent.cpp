@@ -2,6 +2,7 @@
 
 #include "GC_HealthComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "GC_GMFreeForAll.h"
 
 // Sets default values for this component's properties
 UGC_HealthComponent::UGC_HealthComponent()
@@ -9,6 +10,7 @@ UGC_HealthComponent::UGC_HealthComponent()
 	InitialHealth = 100.0f;
 
 	SetIsReplicated(true);
+	bIsDead = false;
 }
 
 
@@ -33,7 +35,7 @@ void UGC_HealthComponent::BeginPlay()
 void UGC_HealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
 
-	if (Damage <= 0.0f)
+	if (Damage <= 0.0f || bIsDead)
 	{
 		return;
 	}
@@ -42,7 +44,18 @@ void UGC_HealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage
 
 	UE_LOG(LogTemp, Warning, TEXT("Health foi alteradadwawawadawd para: %s"), *FString::SanitizeFloat(Health));
 
+	bIsDead = Health <= 0.0f;
+
 	OnHealthChanged.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
+
+	if (bIsDead)
+	{
+		AGC_GMFreeForAll* GM = Cast<AGC_GMFreeForAll>(GetWorld()->GetAuthGameMode());
+		if (GM)
+		{
+			GM->OnActorKilled.Broadcast(GetOwner(), DamageCauser, InstigatedBy);
+		}
+	}
 }
 
 void UGC_HealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {

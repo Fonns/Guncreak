@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "GC_GMFreeForAll.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
+
 /**
  * 
  */
@@ -14,4 +16,9 @@ class GUNCREAK_API AGC_GMFreeForAll : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AGC_GMFreeForAll();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnActorKilled OnActorKilled;
 };

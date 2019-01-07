@@ -22,6 +22,8 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	bool bIsDead;
+
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
 	float Health;
 
