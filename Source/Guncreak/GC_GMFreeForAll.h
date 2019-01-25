@@ -21,4 +21,10 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnActorKilled OnActorKilled;
+
+protected:
+
+	void RespawnDeadPlayers();
+
+	virtual void Tick(float DeltaTime) override;
 };

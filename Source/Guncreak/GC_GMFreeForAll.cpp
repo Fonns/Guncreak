@@ -6,4 +6,25 @@
 AGC_GMFreeForAll::AGC_GMFreeForAll()
 {
 	PlayerStateClass = AGC_PlayerState::StaticClass();
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickInterval = 1.0f;
+}
+
+void AGC_GMFreeForAll::RespawnDeadPlayers()
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* PC = It->Get();
+		if (PC && PC->GetPawn() == nullptr)
+		{
+			RestartPlayer(PC);
+		}
+	}
+}
+
+void AGC_GMFreeForAll::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	RespawnDeadPlayers();
 }
