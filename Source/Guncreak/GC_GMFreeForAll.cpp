@@ -8,6 +8,7 @@ AGC_GMFreeForAll::AGC_GMFreeForAll()
 	PlayerStateClass = AGC_PlayerState::StaticClass();
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickInterval = 1.0f;
+	IsGameOver = false;
 }
 
 void AGC_GMFreeForAll::RespawnDeadPlayers()
@@ -18,6 +19,20 @@ void AGC_GMFreeForAll::RespawnDeadPlayers()
 		if (PC && PC->GetPawn() == nullptr)
 		{
 			RestartPlayer(PC);
+		}
+	}
+}
+
+void AGC_GMFreeForAll::AnyoneWin()
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* PC = It->Get();
+		APlayerState* PS = PC->PlayerState;
+		if (PS && (PS->Score > 9))
+		{
+			IsGameOver = true;
+			PS->Score = 99;
 		}
 	}
 }

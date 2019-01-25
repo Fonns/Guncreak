@@ -22,9 +22,13 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnActorKilled OnActorKilled;
 
+	bool IsGameOver;
+
 protected:
 
 	void RespawnDeadPlayers();
+
+	void AnyoneWin();
 
 	virtual void Tick(float DeltaTime) override;
 };
