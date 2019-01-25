@@ -24,6 +24,9 @@ public:
 
 	bool IsGameOver;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int FinishGameScore;
+
 protected:
 
 	void RespawnDeadPlayers();

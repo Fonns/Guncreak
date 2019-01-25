@@ -20,6 +20,8 @@ public:
 	// Sets default values for this character's properties
 	AGC_Character();
 
+	bool IsGameOverBool;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComponent;

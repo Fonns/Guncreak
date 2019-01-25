@@ -29,10 +29,20 @@ void AGC_GMFreeForAll::AnyoneWin()
 	{
 		APlayerController* PC = It->Get();
 		APlayerState* PS = PC->PlayerState;
-		if (PS && (PS->Score > 9))
+		if (PS && (PS->Score >= 10))
 		{
 			IsGameOver = true;
-			PS->Score = 99;
+		}
+	}
+	if (IsGameOver)
+	{
+		for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+		{
+			APlayerController* PC = It->Get();
+			if (PC)
+			{
+				
+			}
 		}
 	}
 }
@@ -42,4 +52,5 @@ void AGC_GMFreeForAll::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	RespawnDeadPlayers();
+	AnyoneWin();
 }
