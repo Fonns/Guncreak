@@ -83,7 +83,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	USoundCue* JumpSound;
 
-	bool isWalking;
+	bool isWalkingBool;
 
 public:
 	// Called every frame

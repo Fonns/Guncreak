@@ -45,7 +45,7 @@ void AGC_Character::BeginPlay()
 
 	PickUpWeapon();
 
-	isWalking = false;
+	isWalkingBool = false;
 
 	HealthComp->OnHealthChanged.AddDynamic(this, &AGC_Character::OnHealthChanged);
 
@@ -91,13 +91,11 @@ FVector AGC_Character::GetPawnViewLocation() const {
 void AGC_Character::MoveForward(float Value) {
 
 	AddMovementInput(GetActorForwardVector(), Value);
-	isWalking = true;
 }
 
 void AGC_Character::MoveRight(float Value) {
 
 	AddMovementInput(GetActorRightVector(), Value);
-	isWalking = true;
 }
 
 void AGC_Character::PlayerCrouch() {
@@ -153,18 +151,25 @@ void AGC_Character::PickUpWeapon() {
 
 void AGC_Character::OnHealthChanged(UGC_HealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
-	UGameplayStatics::PlaySoundAtLocation(this, HurtSound, GetActorLocation());
 	if (Health <= 0.0f && !PlayerHasDied)
 	{
 		PlayerHasDied = true;
 		GetMovementComponent()->StopMovementImmediately();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		//GetMesh()->SetSimulatePhysics(true);
+		UGameplayStatics::PlaySoundAtLocation(this, JumpSound, GetActorLocation());
 
 		FTimerHandle SomeHandler;
 		GetWorldTimerManager().SetTimer(SomeHandler, this, &AGC_Character::DetachFromControllerPendingDestroy, 3.0f, false);
 		SetLifeSpan(10.0f);
+
+		
 	}
+	else
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, HurtSound, GetActorLocation());
+	}
+	
 }
 
 void AGC_Character::SVPickUpWeapon_Implementation() {

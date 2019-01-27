@@ -48,11 +48,10 @@ void AGC_WeaponBase::Fire() {
 		QueryParams.AddIgnoredActor(GunOwner);
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
-
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, CameraLocation, TraceEnd, COLLISION_BULLETS, QueryParams)) {
 
-			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 
 			AActor* HitActor = Hit.GetActor();
 			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, BulletDir, Hit, GunOwner->GetInstigatorController(), this, DamageType);
