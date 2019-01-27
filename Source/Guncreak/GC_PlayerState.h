@@ -17,4 +17,10 @@ class GUNCREAK_API AGC_PlayerState : public APlayerState
 public:
 	UFUNCTION(BlueprintCallable)
 	void AddScore(float ScoreDelta);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsWinner = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsGameOver = false;
 };

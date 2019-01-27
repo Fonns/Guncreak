@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GC_PlayerState.h"
 #include "GameFramework/GameModeBase.h"
 #include "GC_GMFreeForAll.generated.h"
 
@@ -22,7 +23,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnActorKilled OnActorKilled;
 
-	bool IsGameOver;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsGameOverGM;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int FinishGameScore;

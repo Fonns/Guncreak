@@ -2,13 +2,14 @@
 
 #include "GC_GMFreeForAll.h"
 #include "GC_PlayerState.h"
+#include "GC_Character.h"
 
 AGC_GMFreeForAll::AGC_GMFreeForAll()
 {
 	PlayerStateClass = AGC_PlayerState::StaticClass();
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickInterval = 1.0f;
-	IsGameOver = false;
+	IsGameOverGM = false;
 }
 
 void AGC_GMFreeForAll::RespawnDeadPlayers()
@@ -27,21 +28,29 @@ void AGC_GMFreeForAll::AnyoneWin()
 {
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
-		APlayerController* PC = It->Get();
-		APlayerState* PS = PC->PlayerState;
+		APlayerState* PS = It->Get()->PlayerState;
 		if (PS && (PS->Score >= 10))
 		{
-			IsGameOver = true;
+			IsGameOverGM = true;
 		}
 	}
-	if (IsGameOver)
+	if (IsGameOverGM)
 	{
 		for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 		{
-			APlayerController* PC = It->Get();
+			APlayerController* PC = Cast<APlayerController>(*It);
 			if (PC)
 			{
-				
+				APlayerState* initPS = PC->PlayerState;
+				AGC_PlayerState* PS = Cast<AGC_PlayerState>(initPS);
+				if (PS)
+				{
+					PS->IsGameOver = true;
+					if (PS->Score >= 10)
+					{
+						PS->IsWinner = true;
+					}
+				}
 			}
 		}
 	}
