@@ -29,7 +29,7 @@ void AGC_GMFreeForAll::AnyoneWin()
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
 		APlayerState* PS = It->Get()->PlayerState;
-		if (PS && (PS->Score >= 10))
+		if (PS && (PS->Score >= 1))
 		{
 			IsGameOverGM = true;
 		}
@@ -46,7 +46,7 @@ void AGC_GMFreeForAll::AnyoneWin()
 				if (PS)
 				{
 					PS->IsGameOver = true;
-					if (PS->Score >= 10)
+					if (PS->Score >= 1)
 					{
 						PS->IsWinner = true;
 					}

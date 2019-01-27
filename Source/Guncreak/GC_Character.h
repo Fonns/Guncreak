@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class AGC_WeaponBase;
 class UGC_HealthComponent;
+class USoundCue;
 
 UCLASS()
 class GUNCREAK_API AGC_Character : public ACharacter
@@ -58,7 +59,7 @@ protected:
 	void SVPickUpWeapon();
 
 	UFUNCTION()
-		void OnHealthChanged(UGC_HealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
+	void OnHealthChanged(UGC_HealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	float AimingFOV;
@@ -72,6 +73,17 @@ protected:
 
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
 	bool PlayerHasDied;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundCue* HurtSound;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundCue* WalkingSound;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundCue* JumpSound;
+
+	bool isWalking;
 
 public:
 	// Called every frame

@@ -9,6 +9,7 @@
 class USkeletalMeshComponent;
 class UDamageType;
 class UParticleSystem;
+class USoundCue;
 
 USTRUCT()
 struct FBulletTraceScan {
@@ -57,6 +58,9 @@ protected:
 	void OnRep_HitScanTrace();
 
 	void PlayImpactEffect(FVector ImpactPoint);
+
+	UPROPERTY(EditAnywhere)
+	USoundCue* FireSound;
 
 public:	
 

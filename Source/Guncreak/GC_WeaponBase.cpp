@@ -2,6 +2,7 @@
 
 #include "GC_WeaponBase.h"
 #include "Guncreak.h"
+#include "Sound/SoundCue.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
@@ -51,9 +52,11 @@ void AGC_WeaponBase::Fire() {
 		FHitResult Hit;
 		if (GetWorld()->LineTraceSingleByChannel(Hit, CameraLocation, TraceEnd, COLLISION_BULLETS, QueryParams)) {
 
-			AActor* HitActor = Hit.GetActor();
+			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 
+			AActor* HitActor = Hit.GetActor();
 			UGameplayStatics::ApplyPointDamage(HitActor, WeaponDamage, BulletDir, Hit, GunOwner->GetInstigatorController(), this, DamageType);
+
 
 			PlayImpactEffect(Hit.ImpactPoint);
 

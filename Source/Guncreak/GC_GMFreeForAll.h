@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GC_PlayerState.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/HUD.h"
 #include "GC_GMFreeForAll.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnActorKilled, AActor*, VictimActor, AActor*, KillerActor, AController*, KillerController);
@@ -36,4 +37,5 @@ protected:
 	void AnyoneWin();
 
 	virtual void Tick(float DeltaTime) override;
+
 };

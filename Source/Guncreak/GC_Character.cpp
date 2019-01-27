@@ -4,6 +4,8 @@
 #include "GC_WeaponBase.h"
 #include "GC_HealthComponent.h"
 #include "Guncreak.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
@@ -43,6 +45,8 @@ void AGC_Character::BeginPlay()
 
 	PickUpWeapon();
 
+	isWalking = false;
+
 	HealthComp->OnHealthChanged.AddDynamic(this, &AGC_Character::OnHealthChanged);
 
 }
@@ -71,7 +75,7 @@ void AGC_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Aim", IE_Released, this, &AGC_Character::AimWeaponCancel);
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AGC_Character::PlayerCrouch);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGC_Character::PickUpWeapon);
+	//PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGC_Character::PickUpWeapon);
 }
 
 FVector AGC_Character::GetPawnViewLocation() const {
@@ -87,11 +91,13 @@ FVector AGC_Character::GetPawnViewLocation() const {
 void AGC_Character::MoveForward(float Value) {
 
 	AddMovementInput(GetActorForwardVector(), Value);
+	isWalking = true;
 }
 
 void AGC_Character::MoveRight(float Value) {
 
 	AddMovementInput(GetActorRightVector(), Value);
+	isWalking = true;
 }
 
 void AGC_Character::PlayerCrouch() {
@@ -147,6 +153,7 @@ void AGC_Character::PickUpWeapon() {
 
 void AGC_Character::OnHealthChanged(UGC_HealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
+	UGameplayStatics::PlaySoundAtLocation(this, HurtSound, GetActorLocation());
 	if (Health <= 0.0f && !PlayerHasDied)
 	{
 		PlayerHasDied = true;
