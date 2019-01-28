@@ -158,17 +158,13 @@ void AGC_Character::OnHealthChanged(UGC_HealthComponent* HealthComp, float Healt
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		//GetMesh()->SetSimulatePhysics(true);
 		UGameplayStatics::PlaySoundAtLocation(this, JumpSound, GetActorLocation());
-
 		FTimerHandle SomeHandler;
 		GetWorldTimerManager().SetTimer(SomeHandler, this, &AGC_Character::DetachFromControllerPendingDestroy, 3.0f, false);
 		SetLifeSpan(10.0f);
 
 		
 	}
-	else
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, HurtSound, GetActorLocation());
-	}
+	UGameplayStatics::PlaySoundAtLocation(this, HurtSound, GetActorLocation());
 	
 }
 

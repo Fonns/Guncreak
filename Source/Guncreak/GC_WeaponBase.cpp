@@ -32,6 +32,7 @@ void AGC_WeaponBase::Fire() {
 	if (Role < ROLE_Authority)
 	{
 		SVFire();
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 	}
 
 	AActor* GunOwner = GetOwner();
@@ -77,6 +78,7 @@ void AGC_WeaponBase::Fire() {
 void AGC_WeaponBase::SVFire_Implementation() {
 
 	Fire();
+	UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
 }
 
 bool AGC_WeaponBase::SVFire_Validate() {
